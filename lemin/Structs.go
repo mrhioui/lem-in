@@ -1,14 +1,19 @@
 package lemin
 
 type Room struct {
-	
+	Name string
+	X, Y int
 }
 
 type Tunnel struct {
+	From Room
+	To   Room
 }
 
-type Colony struct {
-}
-
-type Ant struct {
+type Shema struct {
+	NAnt    int
+	Start   Room
+	End     Room
+	Rooms   []Room
+	Tunnuls []Tunnel
 }

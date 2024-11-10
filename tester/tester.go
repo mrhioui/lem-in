@@ -1,6 +1,8 @@
-package lemin
+package main
 
 import (
+	"fmt"
+	"Lemin-Project/lemin"
 	"Lemin-Project/tools"
 	"log"
 	"os"
@@ -8,32 +10,15 @@ import (
 	"strings"
 )
 
-// Read file input
-func ReadFile() []string {
-	if len(os.Args) != 2 {
-		log.Fatalln("ERROR: There more argements not inportant OR no argement file")
-		os.Exit(1)
-	}
-	file, err := os.ReadFile(os.Args[1])
-	if err != nil {
-		log.Fatalln("ERROR: unable to read file:", err)
-		os.Exit(3)
-	}
-
-	elements := strings.Split(string(file), "\n")
-
-	return elements
-}
-
 // find all(number of ants,rooms,tunnels)
-func FindAll(input []string, Shema *Shema) {
+func FindAll(input []string, Shema *lemin.Shema) {
 	for i := 0; i < len(input); i++ {
 		switch {
-		case i == 0 && tools.IsNumeric(input[i]):
+		case i == 0 && tools.IsNumeric(input[0]):
 			var err error
 			Shema.NAnt, err = strconv.Atoi(input[0])
-			if err != nil || Shema.NAnt == 0 {
-				log.Fatalln("the number of antsis not correct or missing")
+			if err != nil {
+				log.Fatalln("the number of antsis not correct or missig")
 				os.Exit(1)
 			}
 		case tools.IsRoom(input[i]):
@@ -66,18 +51,17 @@ func FindAll(input []string, Shema *Shema) {
 			Tunnul := CompletTunnul(input[i], Shema.Rooms)
 			Shema.Tunnuls = append(Shema.Tunnuls, Tunnul)
 		default:
-			continue
+			log.Fatalln("not yet thinking about message")
+			os.Exit(1)
 		}
 	}
 }
 
 // Add Name and Point of Room
-func CompletRoom(line string) Room {
-	var Room Room
+func CompletRoom(line string) lemin.Room {
+	var Room lemin.Room
 	var err error
-	parts := strings.FieldsFunc(line, func(r rune) bool {
-		return r == ' '
-	})
+	parts := strings.Split(line, " ")
 
 	Room.Name = parts[0]
 	Room.X, err = strconv.Atoi(parts[1])
@@ -93,11 +77,9 @@ func CompletRoom(line string) Room {
 }
 
 // // Add Start and End of Tunnul
-func CompletTunnul(line string, Rooms []Room) Tunnel {
-	var Tunnul Tunnel
-	parths := strings.FieldsFunc(line, func(r rune) bool {
-		return r == '-'
-	})
+func CompletTunnul(line string, Rooms []lemin.Room) lemin.Tunnel {
+	var Tunnul lemin.Tunnel
+	parths := strings.Split(line, "-")
 
 	for _, v := range Rooms {
 		if v.Name == parths[0] {
@@ -108,8 +90,27 @@ func CompletTunnul(line string, Rooms []Room) Tunnel {
 	}
 
 	if Tunnul.From.Name == "" || Tunnul.To.Name == "" {
-		log.Fatalln("There are a rome not exist here !!")
+		log.Fatalln("There a rome not exist here !!")
 		os.Exit(1)
 	}
 	return Tunnul
+}
+
+func main() {
+	var Shema lemin.Shema
+	input := []string{
+		"2", "##start", "1 23 3", "2 16 7", "#comment", "3 16 3", "4 16 5",
+		"5 9 3", "6 1 5", "7 4 8", "##end", "0 9 5", "0-4", "0-6", "1-3",
+		"4-3", "5-2", "3-5", "#another comment", "4-2", "2-1", "7-6",
+		"7-2", "7-4", "6-5"}
+
+	FindAll(input, &Shema)
+
+	fmt.Printf("%v , NAnt\n", Shema.NAnt)
+	fmt.Printf("%v , Start\n", Shema.Start)
+	fmt.Printf("%v , End\n", Shema.End)
+	fmt.Printf("%v , Rooms\n", Shema.Rooms)
+	for i := 0;i<len(Shema.Tunnuls);i++{
+		fmt.Printf("%v\n", Shema.Tunnuls[i])
+	}
 }
