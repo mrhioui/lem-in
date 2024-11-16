@@ -1,8 +1,9 @@
 package lemin
 
 type Room struct {
-	Name string
-	X, Y int
+	Name      string
+	X, Y      int
+	Relations []Room
 }
 
 type Tunnel struct {

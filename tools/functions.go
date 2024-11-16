@@ -28,8 +28,6 @@ func IsRoom(s string) bool {
 		for i, v := range str {
 			if i == 0 && v == "L" {
 				return false
-			} else if !IsNumeric(v) {
-				return false
 			}
 		}
 	}

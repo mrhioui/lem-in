@@ -1,0 +1,6 @@
+package lemin
+
+func FindPaths() {
+
+}
+

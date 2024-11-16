@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fmt"
 	"Lemin-Project/lemin"
 	"Lemin-Project/tools"
+	"fmt"
 	"log"
 	"os"
 	"strconv"
@@ -11,14 +11,14 @@ import (
 )
 
 // find all(number of ants,rooms,tunnels)
-func FindAll(input []string, Shema *lemin.Shema) {
+func FindAll(input []string, Shema *lemin.Shema, Room *lemin.Room) {
 	for i := 0; i < len(input); i++ {
 		switch {
-		case i == 0 && tools.IsNumeric(input[0]):
+		case i == 0 && tools.IsNumeric(input[i]):
 			var err error
 			Shema.NAnt, err = strconv.Atoi(input[0])
-			if err != nil {
-				log.Fatalln("the number of antsis not correct or missig")
+			if err != nil || Shema.NAnt == 0 {
+				log.Fatalln("the number of antsis not correct or missing")
 				os.Exit(1)
 			}
 		case tools.IsRoom(input[i]):
@@ -48,11 +48,10 @@ func FindAll(input []string, Shema *lemin.Shema) {
 				continue
 			}
 		case tools.IsTunnel(input[i]):
-			Tunnul := CompletTunnul(input[i], Shema.Rooms)
-			Shema.Tunnuls = append(Shema.Tunnuls, Tunnul)
+			roomRelated := CompletTunnul(input[i], Shema.Rooms)
+			Room.Relations = append(Room.Relations, roomRelated)
 		default:
-			log.Fatalln("not yet thinking about message")
-			os.Exit(1)
+			continue
 		}
 	}
 }
@@ -76,41 +75,36 @@ func CompletRoom(line string) lemin.Room {
 	return Room
 }
 
-// // Add Start and End of Tunnul
-func CompletTunnul(line string, Rooms []lemin.Room) lemin.Tunnel {
-	var Tunnul lemin.Tunnel
+// Add Start and End of Tunnul
+func CompletTunnul(line string, Rooms []lemin.Room) lemin.Room {
+	var Room lemin.Room
 	parths := strings.Split(line, "-")
-
+	// fmt.Println(parths)
 	for _, v := range Rooms {
+		// fmt.Println("1 :", v)
 		if v.Name == parths[0] {
-			Tunnul.From = v
-		} else if v.Name == parths[1] {
-			Tunnul.To = v
+			for _, a := range Rooms {
+				// fmt.Println("2 :", a)
+				if a.Name == parths[1] {
+					// Room.Relations = append(Room.Relations, a)
+					Room = a
+				}
+			}
 		}
 	}
-
-	if Tunnul.From.Name == "" || Tunnul.To.Name == "" {
-		log.Fatalln("There a rome not exist here !!")
-		os.Exit(1)
-	}
-	return Tunnul
+	return Room
 }
 
 func main() {
 	var Shema lemin.Shema
-	input := []string{
-		"2", "##start", "1 23 3", "2 16 7", "#comment", "3 16 3", "4 16 5",
-		"5 9 3", "6 1 5", "7 4 8", "##end", "0 9 5", "0-4", "0-6", "1-3",
-		"4-3", "5-2", "3-5", "#another comment", "4-2", "2-1", "7-6",
-		"7-2", "7-4", "6-5"}
-
-	FindAll(input, &Shema)
+	var Room lemin.Room
+	input := []string{"10", "##start", "start 1 6", "0 4 8", "o 6 8", "n 6 6", "e 8 4", "t 1 9", "E 5 9", "a 8 9", "m 8 6", "h 4 6", "A 5 2", "c 8 1", "k 11 2", "##end", "end 11 6", "start-t", "n-e", "a-m", "A-c", "0-o", "E-a", "k-end", "start-h", "o-n", "m-end", "t-E", "start-0", "h-A", "e-end", "c-k", "n-m", "h-n"}
+	FindAll(input, &Shema, &Room)
 
 	fmt.Printf("%v , NAnt\n", Shema.NAnt)
 	fmt.Printf("%v , Start\n", Shema.Start)
 	fmt.Printf("%v , End\n", Shema.End)
 	fmt.Printf("%v , Rooms\n", Shema.Rooms)
-	for i := 0;i<len(Shema.Tunnuls);i++{
-		fmt.Printf("%v\n", Shema.Tunnuls[i])
-	}
+	fmt.Printf("%v , relations\n", Shema.Start.Relations)
+
 }

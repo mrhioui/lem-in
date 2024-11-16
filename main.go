@@ -6,8 +6,8 @@ import (
 )
 
 func main() {
-	//parse input, validate, find paths, simulate movements
 	var Shema lemin.Shema
+
 	Variables := lemin.ReadFile()
 	lemin.FindAll(Variables, &Shema)
 
@@ -15,7 +15,7 @@ func main() {
 	fmt.Printf("%v , Start\n", Shema.Start)
 	fmt.Printf("%v , End\n", Shema.End)
 	fmt.Printf("%v , Rooms\n", Shema.Rooms)
-	for i := 0; i < len(Shema.Tunnuls); i++ {
-		fmt.Printf("%v\n", Shema.Tunnuls[i])
-	}
+	// for i := 0; i < len(Shema.Rooms); i++ {
+	// 	fmt.Printf("%v\n", Shema.Rooms[i].Relations)
+	// }
 }
