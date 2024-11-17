@@ -7,15 +7,13 @@ import (
 
 func main() {
 	var Shema lemin.Shema
+	var Room lemin.Room
 
 	Variables := lemin.ReadFile()
-	lemin.FindAll(Variables, &Shema)
+	lemin.FindAll(Variables, &Shema,&Room)
 
 	fmt.Printf("%v , NAnt\n", Shema.NAnt)
 	fmt.Printf("%v , Start\n", Shema.Start)
 	fmt.Printf("%v , End\n", Shema.End)
 	fmt.Printf("%v , Rooms\n", Shema.Rooms)
-	// for i := 0; i < len(Shema.Rooms); i++ {
-	// 	fmt.Printf("%v\n", Shema.Rooms[i].Relations)
-	// }
 }

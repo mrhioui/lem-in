@@ -26,45 +26,56 @@ func ReadFile() []string {
 }
 
 // find all(number of ants,rooms,tunnels)
-func FindAll(input []string, Shema *Shema) {
+func FindAll(input []string, Shema *Shema, Room *Room) {
+	checkS, checkE := false, false
 	for i := 0; i < len(input); i++ {
+		for j := 0; j < i; j++ {
+			if input[j] == input[i] {
+				log.Fatalln("this line is repeated : " + input[i])
+			}
+		}
 		switch {
 		case i == 0 && tools.IsNumeric(input[i]):
 			var err error
 			Shema.NAnt, err = strconv.Atoi(input[0])
 			if err != nil || Shema.NAnt == 0 {
 				log.Fatalln("the number of antsis not correct or missing")
-				os.Exit(1)
 			}
 		case tools.IsRoom(input[i]):
 			Room := CompletRoom(input[i])
+			for _, v := range Shema.Rooms {
+				if v.Name == Room.Name || (v.X == Room.X && v.Y == Room.Y) {
+					log.Fatalln("this room is repeated or cordenets : ", input[i])
+				}
+			}
 			Shema.Rooms = append(Shema.Rooms, Room)
-		case strings.HasPrefix(input[i], "#"):
-			input[i] = strings.TrimPrefix(input[i], "#")
-			if input[i] == "#start" {
+		case strings.HasPrefix(input[i], "##"):
+			input[i] = strings.TrimPrefix(input[i], "##")
+			if input[i] == "start" && !checkS {
+				checkS = true
 				i++
 				if !tools.IsRoom(input[i]) {
 					log.Fatalln("this is not a Room")
-					os.Exit(1)
 				}
 				StartRoom := CompletRoom(input[i])
 				Shema.Start = StartRoom
 				Shema.Rooms = append(Shema.Rooms, StartRoom)
-			} else if input[i] == "#end" {
+			} else if input[i] == "end" && !checkE {
+				checkE = true
 				i++
 				if !tools.IsRoom(input[i]) {
 					log.Fatalln("this is not a Room")
-					os.Exit(1)
 				}
 				EndRoom := CompletRoom(input[i])
 				Shema.End = EndRoom
 				Shema.Rooms = append(Shema.Rooms, EndRoom)
-			} else {
+			} else if input[i] != "start" || input[i] != "end" {
 				continue
+			} else {
+				log.Fatalln("this line is repeated : ##" + input[i])
 			}
 		case tools.IsTunnel(input[i]):
-			Tunnul := CompletTunnul(input[i], Shema.Rooms)
-			Shema.Tunnuls = append(Shema.Tunnuls, Tunnul)
+			CompletTunnul(input[i], Shema.Rooms)
 		default:
 			continue
 		}
@@ -75,9 +86,7 @@ func FindAll(input []string, Shema *Shema) {
 func CompletRoom(line string) Room {
 	var Room Room
 	var err error
-	parts := strings.FieldsFunc(line, func(r rune) bool {
-		return r == ' '
-	})
+	parts := strings.Split(line, " ")
 
 	Room.Name = parts[0]
 	Room.X, err = strconv.Atoi(parts[1])
@@ -92,24 +101,33 @@ func CompletRoom(line string) Room {
 	return Room
 }
 
-// // Add Start and End of Tunnul
-func CompletTunnul(line string, Rooms []Room) Tunnel {
-	var Tunnul Tunnel
-	parths := strings.FieldsFunc(line, func(r rune) bool {
-		return r == '-'
-	})
+// Add Start and End of Tunnul
+func CompletTunnul(line string, Rooms []Room) {
+	parts := strings.Split(line, "-")
+	if len(parts) != 2 {
+		log.Fatalln("Tunnel definition is invalid")
+		return
+	}
 
-	for _, v := range Rooms {
-		if v.Name == parths[0] {
-			Tunnul.From = v
-		} else if v.Name == parths[1] {
-			Tunnul.To = v
+	var roomA *Room
+	var roomB *Room
+
+	for i := range Rooms {
+		if Rooms[i].Name == parts[0] {
+			roomA = &Rooms[i]
+		}
+		if Rooms[i].Name == parts[1] {
+			roomB = &Rooms[i]
 		}
 	}
 
-	if Tunnul.From.Name == "" || Tunnul.To.Name == "" {
-		log.Fatalln("There are a rome not exist here !!")
-		os.Exit(1)
+	if roomA == roomB {
+		log.Fatalln("this tunnul have relation of one room: ", line)
 	}
-	return Tunnul
+	if roomA != nil && roomB != nil {
+		roomA.Relations = append(roomA.Relations, *roomB)
+		roomB.Relations = append(roomB.Relations, *roomA)
+	} else {
+		log.Fatalln("One or both rooms not found for tunnel:", line)
+	}
 }
