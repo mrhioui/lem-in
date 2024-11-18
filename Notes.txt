@@ -2,3 +2,6 @@
     * check name of room  and cordenets (x,y) to not be repeated      yes
     * check start and end to not be repeated                          yes
     * check linkes (same room, room not exist)                        yes
+
+## tasks for find paths :
+    

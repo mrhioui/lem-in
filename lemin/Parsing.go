@@ -70,7 +70,7 @@ func FindAll(input []string, Shema *Shema, Room *Room) {
 				EndRoom := CompletRoom(input[i])
 				Shema.End = EndRoom
 				Shema.Rooms = append(Shema.Rooms, EndRoom)
-			} else if input[i] != "start" || input[i] != "end" {
+			} else if (input[i] != "start") || (input[i] != "end") {
 				continue
 			} else {
 				log.Fatalln("this line is repeated : ##" + input[i])

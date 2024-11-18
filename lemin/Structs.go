@@ -11,4 +11,5 @@ type Shema struct {
 	Start Room
 	End   Room
 	Rooms []Room
+	Paths [][]Room
 }
