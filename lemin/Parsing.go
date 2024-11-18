@@ -1,11 +1,12 @@
 package lemin
 
 import (
-	"Lemin-Project/tools"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"Lemin-Project/tools"
 )
 
 // Read file input
@@ -75,7 +76,7 @@ func FindAll(input []string, Shema *Shema, Room *Room) {
 				log.Fatalln("this line is repeated : ##" + input[i])
 			}
 		case tools.IsTunnel(input[i]):
-			CompletTunnul(input[i], Shema.Rooms)
+			CompletTunnul(input[i], Shema.Rooms, &Shema.Start, &Shema.End)
 		default:
 			continue
 		}
@@ -102,7 +103,7 @@ func CompletRoom(line string) Room {
 }
 
 // Add Start and End of Tunnul
-func CompletTunnul(line string, Rooms []Room) {
+func CompletTunnul(line string, Rooms []Room, Start *Room, End *Room) {
 	parts := strings.Split(line, "-")
 	if len(parts) != 2 {
 		log.Fatalln("Tunnel definition is invalid")
@@ -112,6 +113,7 @@ func CompletTunnul(line string, Rooms []Room) {
 	var roomA *Room
 	var roomB *Room
 
+	// check if exist room
 	for i := range Rooms {
 		if Rooms[i].Name == parts[0] {
 			roomA = &Rooms[i]
@@ -121,10 +123,21 @@ func CompletTunnul(line string, Rooms []Room) {
 		}
 	}
 
+	// check if bad links
 	if roomA == roomB {
 		log.Fatalln("this tunnul have relation of one room: ", line)
 	}
 	if roomA != nil && roomB != nil {
+		if roomA.Name == Start.Name {
+			Start.Relations = append(Start.Relations, *roomB)
+		} else if roomB.Name == Start.Name {
+			Start.Relations = append(Start.Relations, *roomA)
+		}
+		if roomA.Name == End.Name {
+			End.Relations = append(End.Relations, *roomB)
+		} else if roomB.Name == End.Name {
+			End.Relations = append(End.Relations, *roomA)
+		}
 		roomA.Relations = append(roomA.Relations, *roomB)
 		roomB.Relations = append(roomB.Relations, *roomA)
 	} else {

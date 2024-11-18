@@ -6,15 +6,9 @@ type Room struct {
 	Relations []Room
 }
 
-type Tunnel struct {
-	From Room
-	To   Room
-}
-
 type Shema struct {
-	NAnt    int
-	Start   Room
-	End     Room
-	Rooms   []Room
-	Tunnuls []Tunnel
+	NAnt  int
+	Start Room
+	End   Room
+	Rooms []Room
 }
