@@ -9,7 +9,7 @@
             "type": "go",
             "request": "launch",
             "mode": "auto",
-            "program": "/home/mrhioui/Documents/work/lem-in/tester/tester.go"
+            "program": "/home/mrhioui/Documents/lem-in-git/main.go"
         }
     ]
 }

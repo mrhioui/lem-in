@@ -1,12 +1,11 @@
 package lemin
 
 import (
+	"Lemin-Project/tools"
 	"log"
 	"os"
 	"strconv"
 	"strings"
-
-	"Lemin-Project/tools"
 )
 
 // Read file input
@@ -26,31 +25,44 @@ func ReadFile() []string {
 	return elements
 }
 
-// find all(number of ants,rooms,tunnels)
-func FindAll(input []string, Shema *Shema, Room *Room) {
+// Find all(number of ants,rooms,tunnels)
+func FindAll(Shema *Shema, room *Room) {
+	var Rooms []Room
+	input := ReadFile()
 	checkS, checkE := false, false
 	for i := 0; i < len(input); i++ {
+		// Check repeated lines in file
 		for j := 0; j < i; j++ {
 			if input[j] == input[i] {
 				log.Fatalln("this line is repeated : " + input[i])
 			}
 		}
-		switch {
-		case i == 0 && tools.IsNumeric(input[i]):
-			var err error
-			Shema.NAnt, err = strconv.Atoi(input[0])
-			if err != nil || Shema.NAnt == 0 {
+		// Check the number of ants
+		if i == 0 {
+			if tools.IsNumeric(input[i]) {
+				var err error
+				Shema.NAnt, err = strconv.Atoi(input[0])
+				if err != nil || Shema.NAnt == 0 {
+					log.Fatalln("the number of antsis not correct or missing")
+				}
+			} else {
 				log.Fatalln("the number of antsis not correct or missing")
 			}
-		case tools.IsRoom(input[i]):
-			Room := CompletRoom(input[i])
-			for _, v := range Shema.Rooms {
-				if v.Name == Room.Name || (v.X == Room.X && v.Y == Room.Y) {
+		}
+
+		// Check for Rooms
+		if tools.IsRoom(input[i]) {
+			room := CompletRoom(input[i])
+			for _, v := range Rooms {
+				if v.Name == room.Name || (v.X == room.X && v.Y == room.Y) {
 					log.Fatalln("this room is repeated or cordenets : ", input[i])
 				}
 			}
-			Shema.Rooms = append(Shema.Rooms, Room)
-		case strings.HasPrefix(input[i], "##"):
+			Rooms = append(Rooms, room)
+		}
+
+		// Check Start,End and Comments
+		if strings.HasPrefix(input[i], "##") {
 			input[i] = strings.TrimPrefix(input[i], "##")
 			if input[i] == "start" && !checkS {
 				checkS = true
@@ -60,7 +72,7 @@ func FindAll(input []string, Shema *Shema, Room *Room) {
 				}
 				StartRoom := CompletRoom(input[i])
 				Shema.Start = StartRoom
-				Shema.Rooms = append(Shema.Rooms, StartRoom)
+				Rooms = append(Rooms, StartRoom)
 			} else if input[i] == "end" && !checkE {
 				checkE = true
 				i++
@@ -69,16 +81,17 @@ func FindAll(input []string, Shema *Shema, Room *Room) {
 				}
 				EndRoom := CompletRoom(input[i])
 				Shema.End = EndRoom
-				Shema.Rooms = append(Shema.Rooms, EndRoom)
-			} else if (input[i] != "start") || (input[i] != "end") {
+				Rooms = append(Rooms, EndRoom)
+			} else if (input[i] != "start") && (input[i] != "end") {
 				continue
 			} else {
 				log.Fatalln("this line is repeated : ##" + input[i])
 			}
-		case tools.IsTunnel(input[i]):
-			CompletTunnul(input[i], Shema.Rooms, &Shema.Start, &Shema.End)
-		default:
-			continue
+		}
+
+		// Check for Tunnuls
+		if tools.IsTunnel(input[i]) {
+			CompletTunnul(input[i], Rooms, &Shema.Start, &Shema.End)
 		}
 	}
 }

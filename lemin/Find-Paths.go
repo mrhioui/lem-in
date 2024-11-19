@@ -1,22 +1,27 @@
 package lemin
 
-func dfsFindPaths(CurrentRoom Room, EndRoom Room, Visited map[string]bool, Path []Room, Paths *[][]Room) {
-	Visited[CurrentRoom.Name] = true
+func dfsFindPaths(CurrentRoom Room, EndRoom Room, Path []Room, Paths *[][]Room) {
+	// Visited = append(Visited, CurrentRoom)
 	Path = append(Path, CurrentRoom)
-
 	for _, relationRoom := range CurrentRoom.Relations {
-		if Visited[relationRoom.Name] {
-			continue
-		} else if relationRoom.Name != EndRoom.Name {
-			dfsFindPaths(relationRoom, EndRoom, Visited, Path, Paths)
-		} else {
-			*Paths = append(*Paths, Path)
+		// fmt.Println(CurrentRoom.Name)
+		for _, vis := range Path {
+			if vis.Name == relationRoom.Name {
+				continue
+			}
 		}
+		if relationRoom.Name == EndRoom.Name {
+			Path = append(Path, relationRoom)
+			*Paths = append(*Paths, Path)
+			Path = []Room{}
+			// Visited = []Room{}
+		}
+		dfsFindPaths(relationRoom, EndRoom, Path, Paths)
 	}
+
 }
 
-// FindPaths finds all paths from Start to End in a Shema
 func FindPaths(Shema *Shema) {
-	Visited := make(map[string]bool)
-	dfsFindPaths(Shema.Start, Shema.End, Visited, []Room{}, &Shema.Paths)
+	var Visited []Room
+	dfsFindPaths(Shema.Start, Shema.End, Visited, &Shema.Paths)
 }
