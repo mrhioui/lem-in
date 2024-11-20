@@ -12,5 +12,8 @@ func main() {
 	lemin.FindAll(&Shema, &Room)
 	// lemin.FindPaths(&Shema)
 
+	fmt.Println(Shema.NAnt)
 	fmt.Println(Shema.Start)
+	fmt.Println(Shema.End)
+	// fmt.Println(Shema.Paths)
 }

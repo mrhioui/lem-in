@@ -1,6 +1,7 @@
 package tools
 
 import (
+	"log"
 	"strconv"
 	"strings"
 )
@@ -12,7 +13,6 @@ func IsNumeric(s string) bool {
 			test = true
 		} else {
 			test = false
-			break
 		}
 	}
 	return test
@@ -27,7 +27,7 @@ func IsRoom(s string) bool {
 	} else {
 		for i, v := range str {
 			if i == 0 && v == "L" {
-				return false
+				HandleErrors(3, s)
 			}
 		}
 	}
@@ -48,4 +48,21 @@ func IsTunnel(s string) bool {
 		}
 	}
 	return true
+}
+
+func HandleErrors(n int, s string) {
+	switch n {
+	case 0:
+		log.Fatalln("ERROR: There more argements not inportant OR no argement file")
+	case 1:
+		log.Fatalln("the number of ants is not correct or missing")
+	case 2:
+		log.Fatalln("this line is repeated : " + s)
+	case 3:
+		log.Fatalln("this is not a room : " + s)
+	case 4:
+		log.Fatalln("this room is have repeated name or cordenets : " + s)
+	case 5:
+		log.Fatalln("ERROR: unable to read file: no such file or directory")
+	}
 }
