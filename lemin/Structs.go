@@ -3,7 +3,7 @@ package lemin
 type Room struct {
 	Name      string
 	X, Y      int
-	Parents   []Room
+	// Parents   []Room
 	Relations []Room
 	Visited   bool
 }
