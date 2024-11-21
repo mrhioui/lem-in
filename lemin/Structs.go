@@ -1,16 +1,15 @@
 package lemin
 
 type Room struct {
-	Name      string
-	X, Y      int
+	X, Y int
 	// Parents   []Room
-	Relations []Room
+	Relations []*Room
 	Visited   bool
 }
 
 type Shema struct {
 	NAnt  int
-	Start Room
-	End   Room
+	Start string
+	End   string
 	Paths [][]Room
 }

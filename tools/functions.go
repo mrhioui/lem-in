@@ -2,7 +2,6 @@ package tools
 
 import (
 	"log"
-	"strconv"
 	"strings"
 )
 
@@ -40,12 +39,6 @@ func IsTunnel(s string) bool {
 	})
 	if len(str) != 2 {
 		return false
-	} else {
-		for v := range str {
-			if !IsNumeric(strconv.Itoa(v)) {
-				return false
-			}
-		}
 	}
 	return true
 }

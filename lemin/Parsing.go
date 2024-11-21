@@ -82,7 +82,7 @@ func FindAll(Shema *Shema, room *Room) {
 
 		// Check for Tunnuls
 		if tools.IsTunnel(input[i]) {
-			CompletTunnul(input[i], Rooms)
+			// CompletTunnul(input[i], Rooms)
 		}
 	}
 
@@ -117,33 +117,33 @@ func CompletRoom(line string) Room {
 }
 
 // Add Start and End of Tunnul
-func CompletTunnul(line string, Rooms []Room) {
-	parts := strings.Split(line, "-")
-	if len(parts) != 2 {
-		log.Fatalln("Tunnel definition is invalid")
-	}
+// func CompletTunnul(line string, Rooms []Room) {
+// 	parts := strings.Split(line, "-")
+// 	if len(parts) != 2 {
+// 		log.Fatalln("Tunnel definition is invalid")
+// 	}
 
-	var roomA *Room
-	var roomB *Room
+// 	// var roomA *Room
+// 	// var roomB *Room
 
-	// check if exist room
-	for i := range Rooms {
-		if Rooms[i].Name == parts[0] {
-			roomA = &Rooms[i]
-		}
-		if Rooms[i].Name == parts[1] {
-			roomB = &Rooms[i]
-		}
-	}
+// 	// check if exist room
+// 	for i := range Rooms {
+// 		if Rooms[i].Name == parts[0] {
+// 			roomA = &Rooms[i]
+// 		}
+// 		if Rooms[i].Name == parts[1] {
+// 			roomB = &Rooms[i]
+// 		}
+// 	}
 
-	// check if bad links
-	if roomA == roomB {
-		log.Fatalln("this tunnul have relation of one room: ", line)
-	}
-	if roomA != nil && roomB != nil {
-		roomA.Relations = append(roomA.Relations, *roomB)
-		roomB.Relations = append(roomB.Relations, *roomA)
-	} else {
-		log.Fatalln("One or both rooms not found for tunnel:", line)
-	}
-}
+// 	// check if bad links
+// 	if roomA == roomB {
+// 		log.Fatalln("this tunnul have relation of one room: ", line)
+// 	}
+// 	if roomA != nil && roomB != nil {
+// 		roomA.Relations = append(roomA.Relations, roomB)
+// 		roomB.Relations = append(roomB.Relations, roomA)
+// 	} else {
+// 		log.Fatalln("One or both rooms not found for tunnel:", line)
+// 	}
+// }
