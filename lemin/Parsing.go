@@ -25,7 +25,6 @@ func ReadFile() []string {
 
 // Find all(number of ants,rooms,tunnels)
 func FindAll(Shema *Shema, room *Room) {
-	var Rooms []Room
 	input := ReadFile()
 	checkS, checkE := false, false
 	var StartRoom, EndRoom string

@@ -1,8 +1,7 @@
 package lemin
 
 type Room struct {
-	X, Y int
-	// Parents   []Room
+	X, Y      int
 	Relations []*Room
 	Visited   bool
 }
@@ -13,3 +12,5 @@ type Shema struct {
 	End   string
 	Paths [][]Room
 }
+
+var Rooms = make(map[string]Room)
