@@ -1,27 +1,18 @@
-// package lemin
+package lemin
 
-// func dfsFindPaths(CurrentRoom Room, EndRoom Room, Path []Room, Paths *[][]Room) {
-// 	// Visited = append(Visited, CurrentRoom)
-// 	Path = append(Path, CurrentRoom)
-// 	for _, relationRoom := range CurrentRoom.Relations {
-// 		// fmt.Println(CurrentRoom.Name)
-// 		for _, vis := range Path {
-// 			if vis.Name == relationRoom.Name {
-// 				continue
-// 			}
-// 		}
-// 		if relationRoom.Name == EndRoom.Name {
-// 			Path = append(Path, relationRoom)
-// 			*Paths = append(*Paths, Path)
-// 			Path = []Room{}
-// 			// Visited = []Room{}
-// 		}
-// 		dfsFindPaths(relationRoom, EndRoom, Path, Paths)
-// 	}
+import (
+	"Lemin-Project/variables"
+)
 
-// }
+func FindAllPaths() {
+	var path []variables.Room
+	path = append(path, *variables.Rooms[variables.Start])
 
-// func FindPaths(Shema *Shema) {
-// 	var Visited []Room
-// 	dfsFindPaths(Shema.Start, Shema.End, Visited, &Shema.Paths)
-// }
+	if variables.Start == variables.End {
+		variables.Paths = append(variables.Paths, path)
+	} else {
+		for _, v := range variables.Paths[len(variables.Paths)-1] {
+			if (!path.co)
+		}
+	}
+}
