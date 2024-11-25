@@ -11,7 +11,7 @@ var (
 	NAnt   int
 	Start  string
 	End    string
-	Paths  [][]Room
+	Paths  [][]*Room
 	Errors = map[string]string{
 		"Args":       "ERROR: There more argements not inportant OR no argement file",
 		"Input":      "ERROR: unable to read file: no such file or directory",

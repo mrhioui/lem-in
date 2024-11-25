@@ -65,9 +65,9 @@ func FindAll(Rooms *map[string]*variables.Room) {
 			(*Rooms)[name] = Room
 		} else if tools.IsTunnel(input[i]) { // Check for tunnuls
 			CompletRelation(input[i])
-		}else if strings.HasPrefix(input[i], "#"){
+		} else if strings.HasPrefix(input[i], "#") {
 			continue
-		}  else {
+		} else {
 			log.Fatalln(variables.Errors["Invalid!"])
 		}
 	}
@@ -111,4 +111,5 @@ func CompletRelation(line string) {
 	}
 
 	roomA.Relations = append(roomA.Relations, roomB)
+	roomB.Relations = append(roomB.Relations, roomA)
 }

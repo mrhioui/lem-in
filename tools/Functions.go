@@ -42,17 +42,20 @@ func IsTunnel(s string) bool {
 	return true
 }
 
-func isAvailable(alpha []string, str string) bool {
-
-	// iterate using the for loop
-	for i := 0;
-	i < len(alpha);
-	i++ {
-	   // check      
-	   if alpha[i] == str {
-		  // return true
-		  return true
-	   }
+func AreRoomsEqual(r1, r2 *variables.Room) bool {
+	if r1 == nil || r2 == nil {
+		return r1 == r2
 	}
-	return false
- }
+	
+	if r1.X != r2.X || r1.Y != r2.Y || r1.Visited != r2.Visited || len(r1.Relations) != len(r2.Relations) {
+		return false
+	}
+
+	for i := range r1.Relations {
+		if !AreRoomsEqual(r1.Relations[i], r2.Relations[i]) {
+			return false
+		}
+	}
+
+	return true
+}
