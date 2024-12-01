@@ -2,44 +2,65 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"Lemin-Project/lemin"
+	"Lemin-Project/tools"
 	"Lemin-Project/variables"
 )
 
 func PrintInfos() {
+	if len(variables.Rooms) == 0 {
+		fmt.Println("No rooms to print.")
+		return
+	}
+
+	reverseRooms := make(map[*variables.Room]string)
 	for key, value := range variables.Rooms {
-		fmt.Printf("name: %v,  adrr: %p,  x: %v, y: %v, visited: %v\n\tRelations: [", key, value, value.X, value.Y, value.Visited)
+		reverseRooms[value] = key
+	}
+
+	for key, value := range variables.Rooms {
+		fmt.Printf("* Name: %v\nAddress: %p\n", key, value)
+		fmt.Printf("Coordinates: (X: %v, Y: %v)\n", value.X, value.Y)
+		fmt.Printf("Visited: %v\n", value.Visited)
+		fmt.Println("Relations:")
 		for _, rel := range value.Relations {
-			for key, value := range variables.Rooms {
-				if value == rel {
-					fmt.Printf("%v - %p\t", key, value)
-				}
+			if name, found := reverseRooms[rel]; found {
+				fmt.Printf("\t- %v (%p)\n", name, rel)
+			} else {
+				fmt.Printf("\t- Invalid relation (%p)\n", rel)
 			}
 		}
-		fmt.Println("]\n-------------------------------------------------------------------------------------------------------------------------------------------------")
+		fmt.Println(strings.Repeat("-", 40))
 	}
 }
 
 func main() {
-	lemin.FindAll(&variables.Rooms)
+	// Parsing all info from file
+	content := lemin.FindAll(&variables.Rooms)
 	PrintInfos()
-	fmt.Println("\n-------------------------------------------------------------------------------------------------------------------------------------------------")
+	fmt.Println("\n", strings.Repeat("-", 120))
 	lemin.ExtractPaths(variables.Rooms[variables.Start], nil)
 	// lemin.ExtractPaths(variables.Rooms[variables.Start],[]*variables.Room{})
 	lemin.SortPaths()
 	for i, path := range lemin.Paths {
 		fmt.Printf("path n%d: %v >> capcity: %d\n", i+1, path, len(path)-2)
 	}
-	fmt.Println("\n-------------------------------------------------------------------------------------------------------------------------------------------------")
+	fmt.Println("\n", strings.Repeat("-", 120))
 	combined := ValidPathsCombs()
 	for i, com := range combined {
 		fmt.Printf("combination n%d: %v >> number of combined paths %d\n", i+1, com, len(com))
 	}
-	fmt.Println("\n-------------------------------------------------------------------------------------------------------------------------------------------------")
-	// for i, path := range lemin.Paths {
-	// 	fmt.Printf("path n%d: %v >> capcity: %d\n", i+1, path, len(path)-2)
-	// }
+	fmt.Println("\n", strings.Repeat("-", 120))
+
+	combined = tools.RemoveMatching(combined)
+
+	fmt.Println(string(content))
+	fmt.Println()
+
+	combinations := lemin.BestPath(variables.NAnt, combined)
+	lemin.AntMove(combinations, variables.NAnt)
 }
 
 func ValidPathsCombs() (validCombs [][][]string) {

@@ -1,9 +1,10 @@
 package tools
 
 import (
-	"Lemin-Project/variables"
 	"log"
 	"strings"
+
+	"Lemin-Project/variables"
 )
 
 func IsNumeric(s string) bool {
@@ -42,17 +43,14 @@ func IsTunnel(s string) bool {
 	return true
 }
 
-func isAvailable(alpha []string, str string) bool {
-
-	// iterate using the for loop
-	for i := 0;
-	i < len(alpha);
-	i++ {
-	   // check      
-	   if alpha[i] == str {
-		  // return true
-		  return true
-	   }
-	}
-	return false
- }
+// func isAvailable(alpha []string, str string) bool {
+// 	// iterate using the for loop
+// 	for i := 0; i < len(alpha); i++ {
+// 		// check
+// 		if alpha[i] == str {
+// 			// return true
+// 			return true
+// 		}
+// 	}
+// 	return false
+// }

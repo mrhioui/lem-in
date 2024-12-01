@@ -1,16 +1,17 @@
 package lemin
 
 import (
-	"Lemin-Project/tools"
-	"Lemin-Project/variables"
 	"log"
 	"os"
 	"strconv"
 	"strings"
+
+	"Lemin-Project/tools"
+	"Lemin-Project/variables"
 )
 
 // Read file input
-func ReadFile() []string {
+func ReadFile() ([]string, []byte) {
 	if len(os.Args) != 2 {
 		log.Fatalln(variables.Errors["Args"])
 	}
@@ -21,12 +22,12 @@ func ReadFile() []string {
 
 	elements := strings.Split(string(file), "\n")
 
-	return elements
+	return elements, file
 }
 
-// Find all(number of ants,rooms,tunnels)
-func FindAll(Rooms *map[string]*variables.Room) {
-	input := ReadFile()
+// Find all (number of ants, rooms, tunnels)
+func FindAll(Rooms *map[string]*variables.Room) []byte {
+	input, content := ReadFile()
 
 	// Check the number of ants
 	if tools.IsNumeric(input[0]) {
@@ -47,7 +48,7 @@ func FindAll(Rooms *map[string]*variables.Room) {
 			}
 		}
 
-		if strings.HasPrefix(input[i], "##") { // Check Start,End and Comments
+		if strings.HasPrefix(input[i], "##") { // Check Start, End and Comments
 			input[i] = strings.TrimPrefix(input[i], "##")
 			if input[i] == "start" {
 				str := strings.FieldsFunc(input[i+1], func(r rune) bool {
@@ -65,12 +66,14 @@ func FindAll(Rooms *map[string]*variables.Room) {
 			(*Rooms)[name] = Room
 		} else if tools.IsTunnel(input[i]) { // Check for tunnuls
 			CompletRelation(input[i])
-		}else if strings.HasPrefix(input[i], "#"){
+		} else if strings.HasPrefix(input[i], "#") {
 			continue
-		}  else {
+		} else {
 			log.Fatalln(variables.Errors["Invalid!"])
 		}
 	}
+
+	return content
 }
 
 // Add Room
@@ -111,4 +114,5 @@ func CompletRelation(line string) {
 	}
 
 	roomA.Relations = append(roomA.Relations, roomB)
+	roomB.Relations = append(roomB.Relations, roomA)
 }

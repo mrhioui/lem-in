@@ -6,6 +6,13 @@ type Room struct {
 	Visited   bool
 }
 
+type Ant struct {
+	Path        []string
+	CurrentRoom int
+	Previous    string
+	IsInactive  bool
+}
+
 var (
 	Rooms  = make(map[string]*Room)
 	NAnt   int
