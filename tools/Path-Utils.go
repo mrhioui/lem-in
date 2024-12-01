@@ -10,8 +10,7 @@ func RemoveMatching(combined [][][]string) [][][]string {
 			newCombined = append(newCombined, cmb)
 		}
 	}
-	combined = newCombined
-	return combined
+	return newCombined
 }
 
 func matchingPaths(newCombined [][][]string, cmb1 [][]string) bool {

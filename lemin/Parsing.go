@@ -114,5 +114,5 @@ func CompletRelation(line string) {
 	}
 
 	roomA.Relations = append(roomA.Relations, roomB)
-	roomB.Relations = append(roomB.Relations, roomA)
+	// roomB.Relations = append(roomB.Relations, roomA)
 }

@@ -63,6 +63,7 @@ func main() {
 	lemin.AntMove(combinations, variables.NAnt)
 }
 
+// Combinations of non-intersecting paths
 func ValidPathsCombs() (validCombs [][][]string) {
 	for i := range lemin.Paths {
 		var currComb [][]string

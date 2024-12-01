@@ -136,3 +136,46 @@ combination n6: [[start 0 o n m end] [start h A c k end]] >> number of combined 
 combination n7: [[start 0 o n h A c k end] [start t E a m end]] >> number of combined paths 2
 
  ------------------------------------------------------------------------------------------------------------------------
+10
+##start
+start 1 6
+0 4 8
+o 6 8
+n 6 6
+e 8 4
+t 1 9
+E 5 9
+a 8 9
+m 8 6
+h 4 6
+A 5 2
+c 8 1
+k 11 2
+##end
+end 11 6
+start-t
+n-e
+a-m
+A-c
+0-o
+E-a
+k-end
+start-h
+o-n
+m-end
+t-E
+start-0
+h-A
+e-end
+c-k
+n-m
+h-n
+
+L1-h L2-t L3-0 
+L1-A L2-E L3-o L4-h L5-t L6-0 
+L1-c L2-a L3-n L4-A L5-E L6-o L7-h L8-t L9-0 
+L1-k L2-m L3-e L4-c L5-a L6-n L7-A L8-E L9-o L10-h 
+L1-end L2-end L3-end L4-k L5-m L6-e L7-c L8-a L9-n L10-A 
+L4-end L5-end L6-end L7-k L8-m L9-e L10-c 
+L7-end L8-end L9-end L10-k 
+L10-end
