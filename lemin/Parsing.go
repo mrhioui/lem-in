@@ -11,7 +11,7 @@ import (
 )
 
 // Read file input
-func ReadFile() ([]string, []byte) {
+func ReadFile() []string {
 	if len(os.Args) != 2 {
 		log.Fatalln(variables.Errors["Args"])
 	}
@@ -22,12 +22,12 @@ func ReadFile() ([]string, []byte) {
 
 	elements := strings.Split(string(file), "\n")
 
-	return elements, file
+	return elements
 }
 
 // Find all (number of ants, rooms, tunnels)
-func FindAll(Rooms *map[string]*variables.Room) []byte {
-	input, content := ReadFile()
+func FindAll(Rooms *map[string]*variables.Room) string {
+	input := ReadFile()
 
 	// Check the number of ants
 	if tools.IsNumeric(input[0]) {
@@ -44,18 +44,18 @@ func FindAll(Rooms *map[string]*variables.Room) []byte {
 		// Check repeated lines in file
 		for j := 0; j < i; j++ {
 			if input[j] == input[i] {
-				log.Fatalln(variables.Errors["Repeat"])
+				log.Fatalf(variables.Errors["Repeat"]+"%d", i)
 			}
 		}
 
 		if strings.HasPrefix(input[i], "##") { // Check Start, End and Comments
 			input[i] = strings.TrimPrefix(input[i], "##")
-			if input[i] == "start" {
+			if input[i] == "start" && i+1 < len(input) && len(input[i+1]) > 0 {
 				str := strings.FieldsFunc(input[i+1], func(r rune) bool {
 					return r == ' '
 				})
 				variables.Start = str[0]
-			} else if input[i] == "end" {
+			} else if input[i] == "end" && i+1 < len(input) && len(input[i+1]) > 0 {
 				str := strings.FieldsFunc(input[i+1], func(r rune) bool {
 					return r == ' '
 				})
@@ -64,7 +64,7 @@ func FindAll(Rooms *map[string]*variables.Room) []byte {
 		} else if tools.IsRoom(input[i]) { // Check for Rooms
 			name, Room := CompletRoom(input[i])
 			(*Rooms)[name] = Room
-		} else if tools.IsTunnel(input[i]) { // Check for tunnuls
+		} else if tools.IsTunnel(input[i]) { // Check for Tunnuls
 			CompletRelation(input[i])
 		} else if strings.HasPrefix(input[i], "#") {
 			continue
@@ -73,7 +73,7 @@ func FindAll(Rooms *map[string]*variables.Room) []byte {
 		}
 	}
 
-	return content
+	return strings.Join(input, "\n")
 }
 
 // Add Room
@@ -110,7 +110,7 @@ func CompletRelation(line string) {
 	roomB, okB := variables.Rooms[str[1]]
 
 	if !okA || !okB {
-		log.Fatalln(variables.Errors["TunnulRoom"])
+		log.Fatalln(variables.Errors["TunnulRoom"], line)
 	}
 
 	roomA.Relations = append(roomA.Relations, roomB)

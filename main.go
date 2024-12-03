@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"strings"
 
 	"Lemin-Project/lemin"
@@ -11,8 +12,7 @@ import (
 
 func PrintInfos() {
 	if len(variables.Rooms) == 0 {
-		fmt.Println("No rooms to print.")
-		return
+		log.Fatalln(variables.Errors["Invalid"])
 	}
 
 	reverseRooms := make(map[*variables.Room]string)
@@ -38,7 +38,7 @@ func PrintInfos() {
 
 func main() {
 	// Parsing all info from file
-	content := lemin.FindAll(&variables.Rooms)
+	input := lemin.FindAll(&variables.Rooms)
 	PrintInfos()
 	fmt.Println("\n", strings.Repeat("-", 120))
 	lemin.ExtractPaths(variables.Rooms[variables.Start], nil)
@@ -56,7 +56,7 @@ func main() {
 
 	combined = tools.RemoveMatching(combined)
 
-	fmt.Println(string(content))
+	fmt.Println(input)
 	fmt.Println()
 
 	combinations := lemin.BestPath(variables.NAnt, combined)
