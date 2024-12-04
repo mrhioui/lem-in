@@ -15,22 +15,13 @@ func PrintInfos() {
 		log.Fatalln(variables.Errors["Invalid"])
 	}
 
-	reverseRooms := make(map[*variables.Room]string)
-	for key, value := range variables.Rooms {
-		reverseRooms[value] = key
-	}
-
 	for key, value := range variables.Rooms {
 		fmt.Printf("* Name: %v\nAddress: %p\n", key, value)
 		fmt.Printf("Coordinates: (X: %v, Y: %v)\n", value.X, value.Y)
 		fmt.Printf("Visited: %v\n", value.Visited)
 		fmt.Println("Relations:")
 		for _, rel := range value.Relations {
-			if name, found := reverseRooms[rel]; found {
-				fmt.Printf("\t- %v (%p)\n", name, rel)
-			} else {
-				fmt.Printf("\t- Invalid relation (%p)\n", rel)
-			}
+			fmt.Printf("\t- %v (%p)\n", tools.GetRoomName(rel), rel)
 		}
 		fmt.Println(strings.Repeat("-", 40))
 	}
@@ -41,23 +32,25 @@ func main() {
 	input := lemin.FindAll(&variables.Rooms)
 	PrintInfos()
 	fmt.Println("\n", strings.Repeat("-", 120))
+
 	lemin.ExtractPaths(variables.Rooms[variables.Start], nil)
 	// lemin.ExtractPaths(variables.Rooms[variables.Start],[]*variables.Room{})
-	lemin.SortPaths()
+	lemin.SortPaths(lemin.Paths)
 	for i, path := range lemin.Paths {
-		fmt.Printf("path n%d: %v >> capcity: %d\n", i+1, path, len(path)-2)
+		fmt.Printf("path n%d: %v >> capacity: %d\n", i+1, path, len(path)-2)
 	}
 	fmt.Println("\n", strings.Repeat("-", 120))
+
 	combined := ValidPathsCombs()
+	sortInCombinations(combined)
 	for i, com := range combined {
 		fmt.Printf("combination n%d: %v >> number of combined paths %d\n", i+1, com, len(com))
 	}
 	fmt.Println("\n", strings.Repeat("-", 120))
 
-	combined = tools.RemoveMatching(combined)
+	// combined = tools.RemoveMatching(combined)
 
-	fmt.Println(input)
-	fmt.Println()
+	fmt.Print(input, "\n\n")
 
 	combinations := lemin.BestPath(variables.NAnt, combined)
 	lemin.AntMove(combinations, variables.NAnt)
@@ -105,4 +98,10 @@ func containsRoom(path []string, roomName string) bool {
 		}
 	}
 	return false
+}
+
+func sortInCombinations(validCombs [][][]string) {
+	for _, cmb := range validCombs {
+		lemin.SortPaths(cmb)
+	}
 }

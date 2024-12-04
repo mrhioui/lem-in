@@ -1,181 +1,80 @@
-* Name: o
-Address: 0xc000100300
-Coordinates: (X: 6, Y: 8)
+* Name: peter
+Address: 0xc0001004e0
+Coordinates: (X: 14, Y: 6)
 Visited: false
 Relations:
-        - 0 (0xc000100270)
-        - n (0xc000100390)
 ----------------------------------------
-* Name: a
-Address: 0xc0001005d0
-Coordinates: (X: 8, Y: 9)
-Visited: false
-Relations:
-        - m (0xc000100660)
-        - E (0xc000100540)
-----------------------------------------
-* Name: end
-Address: 0xc000100960
-Coordinates: (X: 11, Y: 6)
-Visited: false
-Relations:
-        - k (0xc0001008a0)
-        - m (0xc000100660)
-        - e (0xc000100420)
-----------------------------------------
-* Name: start
+* Name: richard
 Address: 0xc0001001e0
-Coordinates: (X: 1, Y: 6)
+Coordinates: (X: 0, Y: 6)
 Visited: false
 Relations:
-        - t (0xc0001004b0)
-        - h (0xc0001006f0)
-        - 0 (0xc000100270)
+        - dinish (0xc000100390)
+        - gilfoyle (0xc000100270)
+        - erlich (0xc000100300)
 ----------------------------------------
-* Name: 0
+* Name: gilfoyle
 Address: 0xc000100270
-Coordinates: (X: 4, Y: 8)
+Coordinates: (X: 6, Y: 3)
 Visited: false
 Relations:
-        - o (0xc000100300)
-        - start (0xc0001001e0)
+        - peter (0xc0001004e0)
+        - erlich (0xc000100300)
 ----------------------------------------
-* Name: e
-Address: 0xc000100420
-Coordinates: (X: 8, Y: 4)
+* Name: erlich
+Address: 0xc000100300
+Coordinates: (X: 9, Y: 6)
 Visited: false
 Relations:
-        - n (0xc000100390)
-        - end (0xc000100960)
+        - jimYoung (0xc000100420)
 ----------------------------------------
-* Name: E
-Address: 0xc000100540
-Coordinates: (X: 5, Y: 9)
-Visited: false
-Relations:
-        - a (0xc0001005d0)
-        - t (0xc0001004b0)
-----------------------------------------
-* Name: k
-Address: 0xc0001008a0
-Coordinates: (X: 11, Y: 2)
-Visited: false
-Relations:
-        - end (0xc000100960)
-        - c (0xc000100810)
-----------------------------------------
-* Name: t
-Address: 0xc0001004b0
-Coordinates: (X: 1, Y: 9)
-Visited: false
-Relations:
-        - start (0xc0001001e0)
-        - E (0xc000100540)
-----------------------------------------
-* Name: A
-Address: 0xc000100780
-Coordinates: (X: 5, Y: 2)
-Visited: false
-Relations:
-        - c (0xc000100810)
-        - h (0xc0001006f0)
-----------------------------------------
-* Name: n
+* Name: dinish
 Address: 0xc000100390
-Coordinates: (X: 6, Y: 6)
+Coordinates: (X: 6, Y: 9)
 Visited: false
 Relations:
-        - e (0xc000100420)
-        - o (0xc000100300)
-        - m (0xc000100660)
-        - h (0xc0001006f0)
+        - jimYoung (0xc000100420)
 ----------------------------------------
-* Name: m
-Address: 0xc000100660
-Coordinates: (X: 8, Y: 6)
+* Name: jimYoung
+Address: 0xc000100420
+Coordinates: (X: 11, Y: 7)
 Visited: false
 Relations:
-        - a (0xc0001005d0)
-        - end (0xc000100960)
-        - n (0xc000100390)
-----------------------------------------
-* Name: h
-Address: 0xc0001006f0
-Coordinates: (X: 4, Y: 6)
-Visited: false
-Relations:
-        - start (0xc0001001e0)
-        - A (0xc000100780)
-        - n (0xc000100390)
-----------------------------------------
-* Name: c
-Address: 0xc000100810
-Coordinates: (X: 8, Y: 1)
-Visited: false
-Relations:
-        - A (0xc000100780)
-        - k (0xc0001008a0)
+        - peter (0xc0001004e0)
 ----------------------------------------
 
  ------------------------------------------------------------------------------------------------------------------------
-path n1: [start h n e end] >> capcity: 3
-path n2: [start h n m end] >> capcity: 3
-path n3: [start t E a m end] >> capcity: 4
-path n4: [start h A c k end] >> capcity: 4
-path n5: [start 0 o n e end] >> capcity: 4
-path n6: [start 0 o n m end] >> capcity: 4
-path n7: [start 0 o n h A c k end] >> capcity: 7
+path n1: [richard gilfoyle peter] >> capacity: 1
+path n2: [richard dinish jimYoung peter] >> capacity: 2
+path n3: [richard erlich jimYoung peter] >> capacity: 2
 
  ------------------------------------------------------------------------------------------------------------------------
-combination n1: [[start h n e end] [start t E a m end]] >> number of combined paths 2
-combination n2: [[start h n m end]] >> number of combined paths 1
-combination n3: [[start t E a m end] [start h n e end]] >> number of combined paths 2
-combination n4: [[start h A c k end] [start t E a m end] [start 0 o n e end]] >> number of combined paths 3
-combination n5: [[start 0 o n e end] [start t E a m end] [start h A c k end]] >> number of combined paths 3
-combination n6: [[start 0 o n m end] [start h A c k end]] >> number of combined paths 2
-combination n7: [[start 0 o n h A c k end] [start t E a m end]] >> number of combined paths 2
+combination n1: [[richard gilfoyle peter] [richard dinish jimYoung peter]] >> number of combined paths 2
+combination n2: [[richard gilfoyle peter] [richard dinish jimYoung peter]] >> number of combined paths 2
+combination n3: [[richard gilfoyle peter] [richard erlich jimYoung peter]] >> number of combined paths 2
 
  ------------------------------------------------------------------------------------------------------------------------
-10
-##start
-start 1 6
-0 4 8
-o 6 8
-n 6 6
-e 8 4
-t 1 9
-E 5 9
-a 8 9
-m 8 6
-h 4 6
-A 5 2
-c 8 1
-k 11 2
-##end
-end 11 6
-start-t
-n-e
-a-m
-A-c
-0-o
-E-a
-k-end
-start-h
-o-n
-m-end
-t-E
-start-0
-h-A
-e-end
-c-k
-n-m
-h-n
+9
+start
+richard 0 6
+gilfoyle 6 3
+erlich 9 6
+dinish 6 9
+jimYoung 11 7
+end
+peter 14 6
+richard-dinish
+dinish-jimYoung
+richard-gilfoyle
+gilfoyle-peter
+gilfoyle-erlich
+richard-erlich
+erlich-jimYoung
+jimYoung-peter
 
-L1-h L2-t L3-0 
-L1-A L2-E L3-o L4-h L5-t L6-0 
-L1-c L2-a L3-n L4-A L5-E L6-o L7-h L8-t L9-0 
-L1-k L2-m L3-e L4-c L5-a L6-n L7-A L8-E L9-o L10-h 
-L1-end L2-end L3-end L4-k L5-m L6-e L7-c L8-a L9-n L10-A 
-L4-end L5-end L6-end L7-k L8-m L9-e L10-c 
-L7-end L8-end L9-end L10-k 
-L10-end
+L1-gilfoyle L2-erlich 
+L1-peter L2-jimYoung L3-gilfoyle L4-erlich 
+L2-peter L3-peter L4-jimYoung L5-gilfoyle L6-erlich 
+L4-peter L5-peter L6-jimYoung L7-gilfoyle L8-erlich 
+L6-peter L7-peter L8-jimYoung L9-gilfoyle 
+L8-peter L9-peter

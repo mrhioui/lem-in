@@ -7,7 +7,7 @@ import (
 	"Lemin-Project/variables"
 )
 
-// GetBestPath gets one optimal path
+// Determines the optimal combination of paths
 func BestPath(ants int, combined [][][]string) [][]string {
 	for _, path := range Paths {
 		if len(path) == 2 {

@@ -1,47 +1,58 @@
 package lemin
 
 import (
+	"log"
 	"sort"
 
+	"Lemin-Project/tools"
 	"Lemin-Project/variables"
 )
 
 var Paths [][]string
 
-func getRoomName(currentRoom *variables.Room) string {
-	for rName, room := range variables.Rooms {
-		if room == currentRoom {
-			return rName
-		}
-	}
-	return ""
-}
-
+// DFS exploring a path as deeply as possible before backtracking
 func ExtractPaths(currentRoom *variables.Room, Qpath []string) {
 	defer func() {
 		currentRoom.Visited = false
 	}()
 	currentRoom.Visited = true
-	Qpath = append(Qpath, getRoomName(currentRoom))
-	if currentRoom == variables.Rooms[variables.End] {
-		Paths = append(Paths, Qpath)
-	} else {
-		for _, childRoom := range currentRoom.Relations {
-			if !childRoom.Visited {
-				if childRoom == variables.Rooms[variables.End] {
-					Paths = append(Paths, append(Qpath, variables.End))
-					return
-				} else {
-					ExtractPaths(childRoom, Qpath)
-				}
+	Qpath = append(Qpath, tools.GetRoomName(currentRoom))
+	if appendPath(currentRoom, Qpath) {
+		return
+	}
+	for _, childRoom := range currentRoom.Relations {
+		if !childRoom.Visited {
+			if appendPath(childRoom, append(Qpath, variables.End)) {
+				return
 			}
+			ExtractPaths(childRoom, Qpath)
 		}
 	}
 }
 
-func SortPaths() {
-	sort.Slice(Paths, func(i, j int) bool {
-		return len(Paths[i]) < len(Paths[j])
+func appendPath(currentRoom *variables.Room, Qpath []string) bool {
+	if currentRoom == variables.Rooms[variables.End] {
+		Paths = append(Paths, Qpath)
+		return true
+	}
+	return false
+}
+
+func pathsCheck() {
+	if len(Paths) == 0 {
+		log.Fatalln(variables.Errors["Invalid"])
+	}
+	for i := range Paths {
+		if len(Paths[i]) < 2 {
+			log.Fatalln(variables.Errors["Invalid"])
+		}
+	}
+}
+
+func SortPaths(paths [][]string) {
+	pathsCheck()
+	sort.Slice(paths, func(i, j int) bool {
+		return len(paths[i]) < len(paths[j])
 	})
 }
 

@@ -1,5 +1,18 @@
 package tools
 
+import (
+	"Lemin-Project/variables"
+)
+
+func GetRoomName(currentRoom *variables.Room) string {
+	for rName, room := range variables.Rooms {
+		if room == currentRoom {
+			return rName
+		}
+	}
+	return ""
+}
+
 func RemoveMatching(combined [][][]string) [][][]string {
 	newCombined := [][][]string{}
 	for i, cmb := range combined {
