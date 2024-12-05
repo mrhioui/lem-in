@@ -20,9 +20,10 @@ func ReadFile() []string {
 		log.Fatalln(variables.Errors["Input"])
 	}
 
-	elements := strings.Split(string(file), "\n")
+	elements := strings.TrimSpace(string(file))
+	lines := strings.Split(elements, "\n")
 
-	return elements
+	return lines
 }
 
 // Find all (number of ants, rooms, tunnels)
@@ -81,23 +82,25 @@ func CompletRoom(line string) (string, *variables.Room) {
 	Room := &variables.Room{}
 	var Name string
 	var err error
-	parts := strings.Split(line, " ")
+	parts := strings.Split(strings.TrimSpace(line), " ")
 
 	Name = parts[0]
 	Room.X, err = strconv.Atoi(parts[1])
 	if err != nil {
-		log.Fatalln(variables.Errors["XError"])
+		log.Fatalf(variables.Errors["XError"] + line)
 	}
 	Room.Y, err = strconv.Atoi(parts[2])
 	if err != nil {
-		log.Fatalln(variables.Errors["YError"])
+		log.Fatalln(variables.Errors["YError"] + line)
 	}
 	Room.Visited = false
 
 	return Name, Room
 }
 
+// Add Relation
 func CompletRelation(line string) {
+	line = strings.TrimSpace(line)
 	str := strings.FieldsFunc(line, func(r rune) bool {
 		return r == '-'
 	})
@@ -114,5 +117,5 @@ func CompletRelation(line string) {
 	}
 
 	roomA.Relations = append(roomA.Relations, roomB)
-	// roomB.Relations = append(roomB.Relations, roomA)
+	roomB.Relations = append(roomB.Relations, roomA)
 }

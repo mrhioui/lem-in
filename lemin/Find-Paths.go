@@ -17,25 +17,29 @@ func ExtractPaths(currentRoom *variables.Room, Qpath []string) {
 	}()
 	currentRoom.Visited = true
 	Qpath = append(Qpath, tools.GetRoomName(currentRoom))
-	if appendPath(currentRoom, Qpath) {
-		return
-	}
+	// if currentRoom == variables.Rooms[variables.End] {
+	// 	Paths = append(Paths, Qpath)
+	// } else {
 	for _, childRoom := range currentRoom.Relations {
 		if !childRoom.Visited {
-			if appendPath(childRoom, append(Qpath, variables.End)) {
+			if childRoom == variables.Rooms[variables.End] {
+				Qpath = append(Qpath, variables.End)
+				copyPath := append([]string{}, Qpath...)
+				Paths = append(Paths, copyPath)
 				return
+			} else {
+				ExtractPaths(childRoom, Qpath)
 			}
-			ExtractPaths(childRoom, Qpath)
 		}
 	}
+	// }
 }
 
-func appendPath(currentRoom *variables.Room, Qpath []string) bool {
-	if currentRoom == variables.Rooms[variables.End] {
-		Paths = append(Paths, Qpath)
-		return true
-	}
-	return false
+func SortPaths(paths [][]string) {
+	pathsCheck()
+	sort.Slice(paths, func(i, j int) bool {
+		return len(paths[i]) < len(paths[j])
+	})
 }
 
 func pathsCheck() {
@@ -47,13 +51,6 @@ func pathsCheck() {
 			log.Fatalln(variables.Errors["Invalid"])
 		}
 	}
-}
-
-func SortPaths(paths [][]string) {
-	pathsCheck()
-	sort.Slice(paths, func(i, j int) bool {
-		return len(paths[i]) < len(paths[j])
-	})
 }
 
 // -------------------------
