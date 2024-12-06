@@ -10,25 +10,9 @@ import (
 	"Lemin-Project/variables"
 )
 
-// Read file input
-func ReadFile() []string {
-	if len(os.Args) != 2 {
-		log.Fatalln(variables.Errors["Args"])
-	}
-	file, err := os.ReadFile(os.Args[1])
-	if err != nil {
-		log.Fatalln(variables.Errors["Input"])
-	}
-
-	elements := strings.TrimSpace(string(file))
-	lines := strings.Split(elements, "\n")
-
-	return lines
-}
-
-// Find all (number of ants, rooms, tunnels)
-func FindAll(Rooms *map[string]*variables.Room) string {
-	input := ReadFile()
+// Parse all info (number of ants, rooms, tunnels)
+func ParsingAll(Rooms *map[string]*variables.Room) string {
+	input := readFile()
 
 	// Check the number of ants
 	if tools.IsNumeric(input[0]) {
@@ -64,10 +48,10 @@ func FindAll(Rooms *map[string]*variables.Room) string {
 			}
 			input[i] = "##" + input[i] // For printing
 		} else if tools.IsRoom(input[i]) { // Check for Rooms
-			name, Room := CompletRoom(input[i])
+			name, Room := completRoom(input[i])
 			(*Rooms)[name] = Room
 		} else if tools.IsTunnel(input[i]) { // Check for Tunnuls
-			CompletRelation(input[i])
+			completRelation(input[i])
 		} else if strings.HasPrefix(input[i], "#") {
 			continue
 		} else {
@@ -78,8 +62,24 @@ func FindAll(Rooms *map[string]*variables.Room) string {
 	return strings.Join(input, "\n")
 }
 
+// Read file input
+func readFile() []string {
+	if len(os.Args) != 2 {
+		log.Fatalln(variables.Errors["Args"])
+	}
+	file, err := os.ReadFile(os.Args[1])
+	if err != nil {
+		log.Fatalln(variables.Errors["Input"])
+	}
+
+	elements := strings.TrimSpace(string(file))
+	lines := strings.Split(elements, "\n")
+
+	return lines
+}
+
 // Add Room
-func CompletRoom(line string) (string, *variables.Room) {
+func completRoom(line string) (string, *variables.Room) {
 	Room := &variables.Room{}
 	var Name string
 	var err error
@@ -100,7 +100,7 @@ func CompletRoom(line string) (string, *variables.Room) {
 }
 
 // Add Relation
-func CompletRelation(line string) {
+func completRelation(line string) {
 	line = strings.TrimSpace(line)
 	str := strings.FieldsFunc(line, func(r rune) bool {
 		return r == '-'

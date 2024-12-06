@@ -4,19 +4,18 @@ import (
 	"log"
 	"sort"
 
-	"Lemin-Project/tools"
 	"Lemin-Project/variables"
 )
 
 var Paths [][]string
 
-// DFS exploring a path as deeply as possible before backtracking
-func ExtractPaths(currentRoom *variables.Room, Qpath []string) {
+// DFS explore a path as deeply as possible before backtracking
+func FindPaths(currentRoom *variables.Room, Qpath []string) {
 	defer func() {
 		currentRoom.Visited = false
 	}()
 	currentRoom.Visited = true
-	Qpath = append(Qpath, tools.GetRoomName(currentRoom))
+	Qpath = append(Qpath, getRoomName(currentRoom))
 
 	for _, childRoom := range currentRoom.Relations {
 		if !childRoom.Visited {
@@ -26,10 +25,19 @@ func ExtractPaths(currentRoom *variables.Room, Qpath []string) {
 				Paths = append(Paths, copyPath)
 				return
 			} else {
-				ExtractPaths(childRoom, Qpath)
+				FindPaths(childRoom, Qpath)
 			}
 		}
 	}
+}
+
+func getRoomName(currentRoom *variables.Room) string {
+	for rName, room := range variables.Rooms {
+		if room == currentRoom {
+			return rName
+		}
+	}
+	return ""
 }
 
 func SortPaths(paths [][]string) {
