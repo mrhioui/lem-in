@@ -62,6 +62,7 @@ func FindAll(Rooms *map[string]*variables.Room) string {
 				})
 				variables.End = str[0]
 			}
+			input[i] = "##" + input[i] // For printing
 		} else if tools.IsRoom(input[i]) { // Check for Rooms
 			name, Room := CompletRoom(input[i])
 			(*Rooms)[name] = Room

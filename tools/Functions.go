@@ -24,7 +24,7 @@ func IsRoom(s string) bool {
 		return false
 	} else {
 		if str[0] == "L" || strings.HasPrefix(str[0], "#") {
-			log.Fatalln(variables.Errors["Room"] + s)
+			log.Fatalln(variables.Errors["Room"] + str[0])
 		}
 	}
 	return true
@@ -42,15 +42,3 @@ func IsTunnel(s string) bool {
 	}
 	return true
 }
-
-// func isAvailable(alpha []string, str string) bool {
-// 	// iterate using the for loop
-// 	for i := 0; i < len(alpha); i++ {
-// 		// check
-// 		if alpha[i] == str {
-// 			// return true
-// 			return true
-// 		}
-// 	}
-// 	return false
-// }

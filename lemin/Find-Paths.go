@@ -17,9 +17,7 @@ func ExtractPaths(currentRoom *variables.Room, Qpath []string) {
 	}()
 	currentRoom.Visited = true
 	Qpath = append(Qpath, tools.GetRoomName(currentRoom))
-	// if currentRoom == variables.Rooms[variables.End] {
-	// 	Paths = append(Paths, Qpath)
-	// } else {
+
 	for _, childRoom := range currentRoom.Relations {
 		if !childRoom.Visited {
 			if childRoom == variables.Rooms[variables.End] {
@@ -32,7 +30,6 @@ func ExtractPaths(currentRoom *variables.Room, Qpath []string) {
 			}
 		}
 	}
-	// }
 }
 
 func SortPaths(paths [][]string) {
@@ -43,34 +40,14 @@ func SortPaths(paths [][]string) {
 }
 
 func pathsCheck() {
+	// No path was found
 	if len(Paths) == 0 {
 		log.Fatalln(variables.Errors["Invalid"])
 	}
+	// An incomplete path
 	for i := range Paths {
 		if len(Paths[i]) < 2 {
 			log.Fatalln(variables.Errors["Invalid"])
 		}
 	}
 }
-
-// -------------------------
-// using room pointer as indicator
-// -------------------------
-// var Paths [][]*variables.Room
-
-// func ExtractPaths(currentRoom *variables.Room, Qpath []*variables.Room) {
-// 	defer func() {
-// 		currentRoom.Visited = false
-// 	}()
-// 	currentRoom.Visited = true
-// 	Qpath = append(Qpath, currentRoom)
-// 	if currentRoom == variables.Rooms[variables.End] {
-// 		Paths = append(Paths, Qpath)
-// 	} else {
-// 		for _, childRoom := range currentRoom.Relations {
-// 			if !childRoom.Visited {
-// 				ExtractPaths(childRoom, Qpath)
-// 			}
-// 		}
-// 	}
-// }
