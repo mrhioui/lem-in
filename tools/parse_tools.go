@@ -62,7 +62,17 @@ func CompletRoom(line string) (string, *variables.Room) {
 	}
 	Room.Visited = false
 
+	checkCordinents(Name, Room.X, Room.Y)
+
 	return Name, Room
+}
+
+func checkCordinents(name string, x, y int) {
+	for n, v := range variables.Rooms {
+		if v.X == x && v.Y == y {
+			log.Fatalf("%s (%s %d %d) (%s %d %d)", variables.Errors["XYError"], n, v.X, v.Y, name, x, y)
+		}
+	}
 }
 
 // Add Relation

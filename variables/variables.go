@@ -20,6 +20,7 @@ var (
 		"Room":       "ERROR: This cannot be a room: ",
 		"XError":     "ERROR: The X of room not a number: ",
 		"YError":     "ERROR: The Y of room not a number: ",
+		"XYError":    "ERROR: Both rooms' X and Y coordinates are equal:",
 		"Tunnul":     "ERROR: Invalid Tunnul format, expected format: 'RoomA-RoomB'",
 		"TunnulRoom": "ERROR: One or both rooms do not exist:",
 		"Invalid":    "ERROR: Invalid data format",
