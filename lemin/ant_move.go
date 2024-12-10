@@ -9,12 +9,12 @@ import (
 func AntMove(cmb [][]string, num int) {
 	positions := make([]int, num)
 	occupied := make(map[string]bool)
-	antSteps := make([]int, num)
-	startConnections := len(cmb)
+	startPaths := len(cmb)
 
-	initializeAnts(positions, antSteps, num)
-
-	round := 1
+	// Initializes positions
+	for i := 0; i < num; i++ {
+		positions[i] = 1
+	}
 
 	for {
 		allAntsFinished := true
@@ -22,8 +22,8 @@ func AntMove(cmb [][]string, num int) {
 		antsMoving := 0
 
 		for i := 0; i < num; i++ {
-			if processAnt(i, cmb, positions, occupied, antSteps,
-				startConnections, &antsMoving, &roundOutput) {
+			if processAnt(i, cmb, positions, occupied,
+				startPaths, &antsMoving, &roundOutput) {
 				allAntsFinished = false
 			}
 		}
@@ -35,16 +35,6 @@ func AntMove(cmb [][]string, num int) {
 		if allAntsFinished {
 			break
 		}
-
-		round++
-	}
-}
-
-// Initializes positions and ant steps
-func initializeAnts(positions, antSteps []int, num int) {
-	for i := 0; i < num; i++ {
-		positions[i] = 1
-		antSteps[i] = 1
 	}
 }
 
@@ -54,8 +44,7 @@ func processAnt(
 	cmb [][]string,
 	positions []int,
 	occupied map[string]bool,
-	antSteps []int,
-	startConnections int,
+	startPaths int,
 	antsMoving *int,
 	roundOutput *[]string,
 ) bool {
@@ -76,7 +65,7 @@ func processAnt(
 	}
 
 	// Check if the ant can move from the start
-	if positions[i] == 1 && *antsMoving >= startConnections {
+	if positions[i] == 1 && *antsMoving >= startPaths {
 		return true
 	}
 
@@ -85,7 +74,6 @@ func processAnt(
 		*roundOutput = append(*roundOutput, fmt.Sprintf("L%d-%s", i+1, next))
 		occupied[next] = true
 		positions[i]++
-		antSteps[i]++
 		if positions[i] == 2 {
 			(*antsMoving)++
 		}

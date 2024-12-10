@@ -2,6 +2,7 @@ package tools
 
 import (
 	"log"
+	"strconv"
 	"strings"
 
 	"Lemin-Project/variables"
@@ -41,4 +42,40 @@ func IsTunnel(s string) bool {
 		return false
 	}
 	return true
+}
+
+// Add Room
+func CompletRoom(line string) (string, *variables.Room) {
+	Room := &variables.Room{}
+	var Name string
+	var err error
+	parts := strings.Split(line, " ")
+
+	Name = parts[0]
+	Room.X, err = strconv.Atoi(parts[1])
+	if err != nil {
+		log.Fatalf(variables.Errors["XError"] + line)
+	}
+	Room.Y, err = strconv.Atoi(parts[2])
+	if err != nil {
+		log.Fatalln(variables.Errors["YError"] + line)
+	}
+	Room.Visited = false
+
+	return Name, Room
+}
+
+// Add Relation
+func CompletRelation(line string) {
+	str := strings.Split(line, "-")
+
+	roomA, okA := variables.Rooms[str[0]]
+	roomB, okB := variables.Rooms[str[1]]
+
+	if !okA || !okB {
+		log.Fatalln(variables.Errors["TunnulRoom"], line)
+	}
+
+	roomA.Relations = append(roomA.Relations, roomB)
+	roomB.Relations = append(roomB.Relations, roomA)
 }

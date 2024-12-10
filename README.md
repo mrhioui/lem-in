@@ -20,10 +20,12 @@ Some may have rooms that link to themselves, sending the path-search spinning in
 
 We display the results on the standard output in the following format :
 ```
+(Input)
 number_of_ants
 the_rooms
 the_links
 
+(Solution)
 Lx-y Lz-w Lr-o ...
 ```
 - x, z, r represents the ants numbers (going from 1 to number_of_ants) and y, w, o represents the rooms names.
@@ -69,6 +71,53 @@ L4-0 L5-0 L6-6 L7-4
 L6-0 L7-0
 ```
 
+- As we can see, after all the ants emerged from `##start` (room 1), they reached `##end` (room 0).
+
+## Best combination algorithm
+
+The algorithm calculates the minimum number of turns (referred to as "height") required for a group of ants to traverse a set of paths in various combinations. It iterates through all combinations of paths, calculates the time needed to equalize the lengths of the paths by filling them to the length of the longest path, and determines the remaining ants to distribute (`left`). The "height" is computed as the sum of the longest path length and the additional number of turns required to evenly distribute the remaining ants across the paths, with any remainder adding an extra unit of turns. Each computed height is stored in a map, linking it to the corresponding combination of paths. Finally, the algorithm finds the smallest height, which represents the fastest configuration for all ants to reach their destination.
+
+- **Number of turns' formula**
+
+```
+turns := max + left/paths (floored division)
+```
+
+**Turns**: total number of all ants steps.  
+**Max**: length of longest path in combination.  
+**Left**: remaining ants, after even distribution.  
+**Paths**: number of paths in the combination.  
+
+- **Literal example**
+
+```
+Input:
+ants = 10
+combined = [[[1, 2], [1, 2, 3]], [[1, 2, 3], [1, 2, 3, 4]]]
+
+Step-by-Step Execution,
+For cmb = [[1, 2], [1, 2, 3]]:
+
+paths = 2, max = 3
+fill = (3-2) + (3-3) = 1
+left = 10 - 1 = 9
+turns = max + left/paths = 3 + 9/2 = 3 + 4 = 7
+Store: heights[7] = [[1, 2], [1, 2, 3]], min = 7
+
+Step-by-Step Execution,
+For cmb = [[1, 2, 3], [1, 2, 3, 4]]:
+
+paths = 2, max = 4
+fill = (4-3) + (4-4) = 1
+left = 10 - 1 = 9
+turns = max + left/paths = 4 + 9/2 = 4 + 4 = 8
+Store: heights[8] = [[1, 2, 3], [1, 2, 3, 4]], min = 7
+
+Final Result:
+heights = {7: [[1, 2], [1, 2, 3]], 8: [[1, 2, 3], [1, 2, 3, 4]]}
+min = 7 (Minimal number of turns).
+```
+
 ## Instructions for argument file
 
 - You need to create tunnels and rooms.
@@ -78,7 +127,7 @@ L6-0 L7-0
 - A room can be linked to an infinite number of rooms and by as many tunnels as deemed necessary.
 - Each room can only contain one ant at a time (except at ##start and ##end which can contain as many ants as necessary).
 - To be the first to arrive, ants will need to take the shortest path or paths. They will also need to avoid traffic jams as well as walking all over their fellow ants.
-- You will only display the ants that moved at each turn, and you can move each ant only once and through a tunnel (the room at the receiving end must be empty).
+- We display only the ants that moved at each turn, and each ant can move only once and through a tunnel (the room at the receiving end must be empty).
 - The rooms names will not necessarily be numbers, and in order.
 - Any unknown command will be ignored.
 - The coordinates of the rooms should always be int.

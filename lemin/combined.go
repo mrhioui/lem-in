@@ -1,12 +1,14 @@
 package lemin
 
+import "Lemin-Project/variables"
+
 // Combinations of non-intersecting paths
 func ValidPathsCombs() (validCombs [][][]string) {
-	for i := range Paths {
+	for i := range variables.Paths {
 		var currComb [][]string
-		currComb = append(currComb, Paths[i])
+		currComb = append(currComb, variables.Paths[i])
 
-		for j, path := range Paths {
+		for j, path := range variables.Paths {
 			if i == j {
 				continue
 			}

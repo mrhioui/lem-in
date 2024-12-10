@@ -11,17 +11,17 @@ var (
 	NAnt   int
 	Start  string
 	End    string
-	Paths  [][]Room
+	Paths  [][]string
 	Errors = map[string]string{
-		"Args":       "ERROR: there are more or less arguments than expected",
-		"Input":      "ERROR: unable to read file, no such file or directory",
-		"Ants":       "ERROR: the number of ants is not correct or missing",
-		"Repeat":     "ERROR: this line is repeated: ",
-		"Room":       "ERROR: this cannot be a room: ",
-		"XError":     "ERROR: the X of room not a number: ",
-		"YError":     "ERROR: the Y of room not a number: ",
-		"Tunnul":     "ERROR: invalid Tunnul format, expected format: 'RoomA-RoomB'",
-		"TunnulRoom": "ERROR: one or both rooms do not exist:",
-		"Invalid":    "ERROR: invalid data format",
+		"Args":       "ERROR: There are more or less arguments than expected",
+		"Input":      "ERROR: Unable to read file, no such file or directory",
+		"Ants":       "ERROR: The number of ants is not correct or missing",
+		"Repeat":     "ERROR: This line is repeated: ",
+		"Room":       "ERROR: This cannot be a room: ",
+		"XError":     "ERROR: The X of room not a number: ",
+		"YError":     "ERROR: The Y of room not a number: ",
+		"Tunnul":     "ERROR: Invalid Tunnul format, expected format: 'RoomA-RoomB'",
+		"TunnulRoom": "ERROR: One or both rooms do not exist:",
+		"Invalid":    "ERROR: Invalid data format",
 	}
 )

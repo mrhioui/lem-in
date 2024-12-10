@@ -7,8 +7,6 @@ import (
 	"Lemin-Project/variables"
 )
 
-var Paths [][]string
-
 // DFS explore a path as deeply as possible before backtracking
 func FindPaths(currentRoom *variables.Room, Qpath []string) {
 	defer func() {
@@ -22,7 +20,7 @@ func FindPaths(currentRoom *variables.Room, Qpath []string) {
 			if childRoom == variables.Rooms[variables.End] {
 				Qpath = append(Qpath, variables.End)
 				copyPath := append([]string{}, Qpath...)
-				Paths = append(Paths, copyPath)
+				variables.Paths = append(variables.Paths, copyPath)
 				return
 			} else {
 				FindPaths(childRoom, Qpath)
@@ -49,12 +47,12 @@ func SortPaths(paths [][]string) {
 
 func pathsCheck() {
 	// No path was found
-	if len(Paths) == 0 {
+	if len(variables.Paths) == 0 {
 		log.Fatalln(variables.Errors["Invalid"])
 	}
 	// An incomplete path
-	for i := range Paths {
-		if len(Paths[i]) < 2 {
+	for i := range variables.Paths {
+		if len(variables.Paths[i]) < 2 {
 			log.Fatalln(variables.Errors["Invalid"])
 		}
 	}

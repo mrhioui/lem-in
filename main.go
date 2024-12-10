@@ -9,11 +9,11 @@ import (
 
 func main() {
 	// Parse all info from file
-	input := lemin.ParsingAll(&variables.Rooms)
+	input := lemin.ParsingAll()
 
 	// Extract and sort paths
 	lemin.FindPaths(variables.Rooms[variables.Start], nil)
-	lemin.SortPaths(lemin.Paths)
+	lemin.SortPaths(variables.Paths)
 
 	// Group paths in combinations
 	combined := lemin.ValidPathsCombs()
@@ -22,6 +22,6 @@ func main() {
 	fmt.Print(input, "\n\n")
 
 	// Process with optimal combination
-	combinations := lemin.BestPath(variables.NAnt, combined)
-	lemin.AntMove(combinations, variables.NAnt)
+	combination := lemin.BestComb(variables.NAnt, combined)
+	lemin.AntMove(combination, variables.NAnt)
 }
