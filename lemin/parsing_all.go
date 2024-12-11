@@ -38,6 +38,10 @@ func ParsingAll() string {
 		conditions(&variables.Rooms, input, i)
 	}
 
+	if variables.Start == "" || variables.End == "" {
+		log.Fatalln(variables.Errors["Invalid"])
+	}
+
 	return strings.Join(newInput, "\n")
 }
 
